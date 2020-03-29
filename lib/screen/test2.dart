@@ -1,12 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:LX_KMUTT/arguments.dart';
 
-class TestScreen extends StatefulWidget {
+class TestScreen2 extends StatefulWidget {
   @override
-  _TestScreen createState() => _TestScreen();
+  _TestScreen2 createState() => _TestScreen2();
 }
 
-class _TestScreen extends State<TestScreen> {
+class _TestScreen2 extends State<TestScreen2> {
+
+  List<Widget> buttons() {
+    return <Widget>[
+      RaisedButton(
+        child: Text('Send "Yes" back'),
+        onPressed: () {
+          Navigator.pop(context, 'yessss');
+        },
+      ),
+      SizedBox(width: 16.0),
+      RaisedButton(
+        child: Text('Send "No" back'),
+        onPressed: () {
+          Navigator.pop(context, 'nooooo');
+        },
+      )
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     final TestArguments args = ModalRoute.of(context).settings.arguments;
@@ -22,21 +41,7 @@ class _TestScreen extends State<TestScreen> {
               ),
               Row(
                 mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  RaisedButton(
-                    child: Text('Send "Yes" back'),
-                    onPressed: () {
-                      Navigator.pop(context, 'yessss');
-                    },
-                  ),
-                  SizedBox(width: 16.0),
-                  RaisedButton(
-                    child: Text('Send "No" back'),
-                    onPressed: () {
-                      Navigator.pop(context, 'nooooo');
-                    },
-                  )
-                ]
+                children: buttons()
               )
             ]
           )

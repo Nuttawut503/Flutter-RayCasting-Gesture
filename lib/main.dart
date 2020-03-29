@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:LX_KMUTT/screen/home.dart';
-import 'package:LX_KMUTT/screen/test.dart';
+import 'package:LX_KMUTT/screen/test1.dart';
+import 'package:LX_KMUTT/screen/test2.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,7 +16,8 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => HomeScreen(),
-        '/debug': (context) => TestScreen()        
+        '/test1': (context) => TestScreen1(),
+        '/test2': (context) => TestScreen2()    
       },
       theme: ThemeData(
         // This is the theme of your application.
