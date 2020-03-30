@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -59,7 +60,10 @@ class BoxGesture extends StatelessWidget {
         height: 250.0,
         decoration: BoxDecoration(border: Border.all(width: 1.0)),
         child: Center(
-          child: Text('Touch t nai gor dai at this box')
+          child: Text(
+            'Touch me..',
+            style: GoogleFonts.openSans(fontSize: 30.0)
+          )
         )
       )
     );

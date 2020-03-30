@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:LX_KMUTT/arguments.dart';
 
 class TestScreen1 extends StatefulWidget {
@@ -37,7 +38,7 @@ class _TestScreen1 extends State<TestScreen1> {
               ),
               Text(
                 '$textDisplay',
-                style: opensansStyle(size: 27.0),
+                style: GoogleFonts.openSans(fontSize: 27.0),
               ),
               RaisedButton(
                 child: Text('Click Here to test'),

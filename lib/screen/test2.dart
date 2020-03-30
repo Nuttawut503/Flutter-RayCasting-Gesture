@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:LX_KMUTT/arguments.dart';
 
 class TestScreen2 extends StatefulWidget {
@@ -37,7 +38,7 @@ class _TestScreen2 extends State<TestScreen2> {
             children: <Widget>[
               Text(
                 args.msg ?? 'No variable passed',
-                style: opensansStyle(size: 24.0),
+                style: GoogleFonts.openSans(fontSize: 24.0),
               ),
               Row(
                 mainAxisSize: MainAxisSize.min,
