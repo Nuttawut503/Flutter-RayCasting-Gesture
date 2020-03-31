@@ -17,7 +17,6 @@ class _TestScreen2 extends State<TestScreen2> {
           Navigator.pop(context, 'yessss');
         },
       ),
-      SizedBox(width: 16.0),
       RaisedButton(
         child: Text('Send "No" back'),
         onPressed: () {
@@ -35,13 +34,16 @@ class _TestScreen2 extends State<TestScreen2> {
         child: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Text(
                 args.msg ?? 'No variable passed',
                 style: GoogleFonts.openSans(fontSize: 24.0),
               ),
-              Row(
-                mainAxisSize: MainAxisSize.min,
+              Wrap(
+                direction: Axis.horizontal,
+                alignment: WrapAlignment.center,
+                spacing: 16.0,
                 children: buttons()
               )
             ]

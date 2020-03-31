@@ -28,8 +28,9 @@ class _TestScreen1 extends State<TestScreen1> {
     return Scaffold(
       body: SafeArea(
         child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
+          child: Wrap(
+            direction: Axis.vertical,
+            crossAxisAlignment: WrapCrossAlignment.center,
             children: <Widget>[
               Container(
                 width: 300.0,
