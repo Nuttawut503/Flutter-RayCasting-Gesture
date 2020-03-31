@@ -51,6 +51,8 @@ class OffsetCounter with ChangeNotifier {
 }
 
 class BackgroundDismissal extends StatelessWidget {
+  BackgroundDismissal({Key key}):super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -67,6 +69,8 @@ class BackgroundDismissal extends StatelessWidget {
 }
 
 class InteractiveScreen extends StatelessWidget {
+  InteractiveScreen({Key key}):super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -84,25 +88,37 @@ class InteractiveScreen extends StatelessWidget {
 }
 
 class InteractiveMap extends StatelessWidget {
+  InteractiveMap({Key key}):super(key: key);
+
   @override
   Widget build(BuildContext context) {
+    final counter = Provider.of<OffsetCounter>(context);
     return GestureDetector(
       onTapDown: (TapDownDetails details) {
         final RenderBox box = context.findRenderObject();
         final Offset localOffset = box.globalToLocal(details.globalPosition);
-        Provider.of<OffsetCounter>(context, listen: false).changeTo(localOffset);
+        final Offset percentOffset = Offset(localOffset.dx / box.size.width * 100, localOffset.dy / box.size.height * 100);
+        Provider.of<OffsetCounter>(context, listen: false).changeTo(percentOffset);
       },
       child: Container(
         width: 250.0,
         height: 250.0,
-        decoration: BoxDecoration(color: Colors.black),
-        child: Image.asset('assets/images/kmutt.jpg', fit: BoxFit.cover, alignment: Alignment.center)
+        decoration: BoxDecoration(
+          color: Colors.black,
+          image: DecorationImage(image: AssetImage('assets/images/kmutt.jpg'), fit: BoxFit.cover, alignment: Alignment.center)
+        ),
+        child: CustomPaint(
+          painter: HightlightPainter(tapOffset: counter.offset, box: context.findRenderObject()),
+          child: Container()
+        )
       )
     );
   }
 }
 
 class SideButtons extends StatelessWidget {
+  SideButtons({Key key}):super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Positioned(
@@ -128,137 +144,50 @@ class SideButtons extends StatelessWidget {
   }
 }
 
-// class _HomeScreen extends State<HomeScreen> {
-
-//   Widget sideButtons() {
-//     return Wrap(
-//       direction: Axis.vertical,
-//       children: <Widget>[
-//         IconButton(
-//           icon: Icon(Icons.help),
-//           iconSize: 36.0,
-//           onPressed: null
-//         ),
-//         IconButton(
-//           icon: Icon(Icons.message),
-//           iconSize: 36.0,
-//           onPressed: null
-//         ),
-//         IconButton(
-//           icon: Icon(Icons.calendar_view_day),
-//           iconSize: 36.0,
-//           onPressed: null
-//         ),
-//         IconButton(
-//           icon: Icon(Icons.navigate_next),
-//           iconSize: 36.0,
-//           onPressed: null
-//         )
-//       ]
-//     );
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: Colors.black,
-//       body: SafeArea(
-//         child: Container(
-//           decoration: BoxDecoration(
-//             image: DecorationImage(image: AssetImage('assets/images/bluegrid.jpg'), fit: BoxFit.cover)
-//           ),
-//           child: Stack(
-//             children: <Widget>[
-//               Center(
-//                 child: BoxGesture() 
-//               ),
-//               Positioned(
-//                 top: 20.0,
-//                 right: 16.0,
-//                 child: sideButtons()
-//               )
-//             ]
-//           )
-//         )
-//       ),
-//       floatingActionButton: FloatingActionButton(
-//         child: Icon(Icons.add),
-//         onPressed: () { Navigator.pushNamed(context, '/test1'); },
-//         backgroundColor: Color.fromRGBO(255, 199, 44, 1.0),
-//       )
-//     );
-//   }
-// }
-
-// class BoxGesture extends StatelessWidget {
-
-//   void getPosition(BuildContext context, TapDownDetails details) {
-//     final RenderBox box = context.findRenderObject();
-//     final Offset localOffset = box.globalToLocal(details.globalPosition);
-//     final double horizon = localOffset.dx / box.size.width * 100;
-//     final double vertical = localOffset.dy / box.size.height * 100;
-//     String position = 'You touched at the ';
-//     if (vertical <= 33.33) {
-//       position += (horizon <= 33.33)?'Top Left':((horizon > 66.66)?'Top Right':'Top');
-//     } else if (vertical > 66.66) {
-//       position += (horizon <= 33.33)?'Bottom Left':((horizon > 66.66)?'Bottom Right':'Bottom');
-//     } else {
-//       position += (horizon <= 33.33)?'Left':((horizon > 66.66)?'Right':'Center');
-//     }
-//     position += '\n(X:${horizon.toStringAsFixed(2)}%, Y:${vertical.toStringAsFixed(2)}%)';
-//     showDialog(
-//       context: context,
-//       builder: (context) => AlertDialog(
-//         title: Text('Yay!!'),
-//         content: Text(position)
-//       )
-//     );
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return GestureDetector(
-//       onTapDown: (TapDownDetails details) => getPosition(context, details), 
-//       child: Container(
-//         width: 300.0,
-//         height: 250.0,
-//         decoration: BoxDecoration(
-//           border: Border.all(width: 1.0),
-//           color: Colors.white
-//         ),
-//         child: CustomPaint(
-//           painter: MyPainter(),
-//           child: Center(
-//             child: Text(
-//               'Touch me..',
-//               style: GoogleFonts.openSans(fontSize: 30.0)
-//             )
-//           )
-//         )
-//       )
-//     );
-//   }
-// }
-
-// class MyPainter extends CustomPainter {
-//   final Color myCustomColor;
-
-//   MyPainter({this.myCustomColor = const Color.fromRGBO(200, 200, 0, 0.7)});
-
-//   @override
-//   void paint(Canvas canvas, Size size) {
-//     Paint paint = new Paint()
-//       ..color = myCustomColor
-//       ..style = PaintingStyle.fill;
-//     Path path = new Path()
-//       ..moveTo(0, 0)
-//       ..lineTo(size.width / 2, size.height / 1.5)
-//       ..moveTo(0, 0)
-//       ..lineTo(size.width, 0)
-//       ..lineTo(size.width / 2, size.height / 1.5);
-//     canvas.drawPath(path, paint);
-//   }
+class HightlightPainter extends CustomPainter {
+  HightlightPainter({this.tapOffset, this.box});
   
-//   @override
-//   bool shouldRepaint(CustomPainter oldDelegate) => false;
-// }
+  final Offset tapOffset;
+  final RenderBox box;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    if (tapOffset == null) {
+      return;
+    }
+    Paint paint = new Paint()
+      ..color = Color.fromRGBO(197, 197, 0, 0.5)
+      ..style = PaintingStyle.fill;
+    Path path = new Path();
+    double xp, yp;
+    if (tapOffset.dx < 50.0) {
+      if (tapOffset.dy < 50.0) {
+        xp = 0;
+        yp = 0;
+      } else {
+        xp = 0;
+        yp = box.size.height / 2;
+      }
+    } else {
+      if (tapOffset.dy < 50.0) {
+        xp = box.size.width / 2;
+        yp = 0;
+      } else {
+        xp = box.size.width / 2;
+        yp = box.size.height / 2;
+      }
+    }
+    path.moveTo(xp, yp);
+    path.lineTo(xp + box.size.width / 2, yp);
+    path.lineTo(xp + box.size.width / 2, yp + box.size.height / 2);
+    path.lineTo(xp, yp + box.size.height / 2);
+    path.lineTo(xp, yp);
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(HightlightPainter oldDelegate) {
+    print(oldDelegate.tapOffset != tapOffset);
+    return (oldDelegate.tapOffset != tapOffset);
+  }
+}
