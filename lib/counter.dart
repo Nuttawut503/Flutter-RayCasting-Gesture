@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:LX_KMUTT/xmap.dart';
 
-class OffsetCounter with ChangeNotifier {
-  Offset _offset;
-  Offset get offset => _offset;
+class RoomCounter with ChangeNotifier {
+  String _room;
+  String get roomName => _room;
 
   void changeTo(Offset newOffset) {
-    _offset = newOffset;
+    _room = Building.getRoomName(newOffset);
     notifyListeners();
   }
 }

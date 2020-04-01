@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:LX_KMUTT/counter.dart';
+import 'package:LX_KMUTT/xmap.dart';
 
 class BackgroundDismissal extends StatelessWidget {
   BackgroundDismissal({Key key}):super(key: key);
@@ -9,7 +10,7 @@ class BackgroundDismissal extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTapDown: (TapDownDetails details) {
-        Provider.of<OffsetCounter>(context, listen: false).changeTo(null);
+        Provider.of<RoomCounter>(context, listen: false).changeTo(null);
       },
       child: Container(
         decoration: BoxDecoration(
@@ -45,23 +46,24 @@ class InteractiveMap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final counter = Provider.of<OffsetCounter>(context);
+    final counter = Provider.of<RoomCounter>(context);
     return GestureDetector(
       onTapDown: (TapDownDetails details) {
         final RenderBox box = context.findRenderObject();
         final Offset localOffset = box.globalToLocal(details.globalPosition);
         final Offset percentOffset = Offset(localOffset.dx / box.size.width * 100, localOffset.dy / box.size.height * 100);
-        Provider.of<OffsetCounter>(context, listen: false).changeTo(percentOffset);
+        Provider.of<RoomCounter>(context, listen: false).changeTo(percentOffset);
       },
       child: Container(
         width: 250.0,
-        height: 250.0,
+        height: 300.0,
         decoration: BoxDecoration(
+          border: Border.all(),
           color: Colors.black,
           image: DecorationImage(image: AssetImage('assets/images/kmutt.jpg'), fit: BoxFit.cover, alignment: Alignment.center)
         ),
         child: CustomPaint(
-          painter: HightlightPainter(tapOffset: counter.offset, box: context.findRenderObject()),
+          painter: HightlightPainter(roomName: counter.roomName),
           child: Container()
         )
       )
@@ -70,44 +72,24 @@ class InteractiveMap extends StatelessWidget {
 }
 
 class HightlightPainter extends CustomPainter {
-  HightlightPainter({this.tapOffset, this.box});
+  HightlightPainter({this.roomName});
   
-  final Offset tapOffset;
-  final RenderBox box;
+  final String roomName;
 
   @override
   void paint(Canvas canvas, Size size) {
-    if (tapOffset == null) {
+    print(roomName);
+    if (roomName == null) {
       return;
     }
     Paint paint = new Paint()
       ..color = Color.fromRGBO(197, 197, 0, 0.7)
       ..style = PaintingStyle.fill;
     Path path = new Path();
-    double xp, yp;
-    if (tapOffset.dx < 50.0) {
-      if (tapOffset.dy < 50.0) {
-        xp = 0;
-        yp = 0;
-      } else {
-        xp = 0;
-        yp = box.size.height / 2;
-      }
-    } else {
-      if (tapOffset.dy < 50.0) {
-        xp = box.size.width / 2;
-        yp = 0;
-      } else {
-        xp = box.size.width / 2;
-        yp = box.size.height / 2;
-      }
-    }
-    path
-      ..moveTo(xp, yp)
-      ..lineTo(xp + box.size.width / 2, yp)
-      ..lineTo(xp + box.size.width / 2, yp + box.size.height / 2)
-      ..lineTo(xp, yp + box.size.height / 2)
-      ..lineTo(xp, yp);
+    path.moveTo(Building.rooms[roomName].last.dx / 100 * size.width, Building.rooms[roomName].last.dy / 100 * size.height);
+    Building.rooms[roomName].forEach((Offset point) {
+      path.lineTo(point.dx / 100 * size.width, point.dy / 100 * size.height);
+    });
     canvas.drawPath(path, paint);
     paint
       ..color = Color.fromRGBO(197, 197, 197, 0.6)
@@ -118,6 +100,6 @@ class HightlightPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(HightlightPainter oldDelegate) {
-    return (oldDelegate.tapOffset != tapOffset);
+    return (oldDelegate.roomName != roomName);
   }
 }
