@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => HomeScreen(),
         '/test1': (context) => TestScreen1(),
-        '/test2': (context) => TestScreen2()    
+        '/test2': (context) => TestScreen2()
       },
       theme: ThemeData(
         // This is the theme of your application.
